@@ -17,12 +17,13 @@ def main():
 
     robot = Robot()
     screen.fill(COLOR_BLANCO)
-    # robot.dibujar_fondo(screen)
     robot.dibujar_robot(screen, imagen_robot)
     enc_der, enc_izq = 0, 0
 
     run = True
     clock = pygame.time.Clock()
+    dt = 0
+    last_time = pygame.time.get_ticks()
 
     while run:
         for event in pygame.event.get():
@@ -30,7 +31,7 @@ def main():
                 run = False
 
             elif event.type == pygame.KEYDOWN:
-                enc_der, enc_izq = 0, 0
+                enc_der, enc_izq = 0, 0 # Descomentar para movimiento continuado.
                 # Movimiento continuo hacia delante. Tecla W.
                 if event.key == pygame.K_w:
                     enc_der, enc_izq = robot.movimiento_W()
@@ -51,12 +52,18 @@ def main():
                     enc_der, enc_izq = robot.movimiento_E()
                 # Tecla incorrecta = 0.
                 # robot.odo_calc(enc_der, enc_izq)  # Revisar
-            robot.odo_calc(enc_der, enc_izq)  # Revisar
+            robot.odo_calc(enc_der, enc_izq, dt)  # Revisar
         # robot.dibujar_fondo(screen)
-        clock.tick(FPS)
-        robot.odo_calc(enc_der, enc_izq)  # Revisar
-        robot.dibujar_robot(screen, imagen_robot)
+        dt = (pygame.time.get_ticks() - last_time)/1000
+        last_time = pygame.time.get_ticks()
         pygame.display.flip()
+        screen.fill(COLOR_BLANCO)
+        robot.dibujar_robot(screen, imagen_robot)
+        robot.dibujar_trail(screen)
+        robot.dibujar_pos_info(screen)
+        # pygame.display.flip()
+        robot.odo_calc(enc_der, enc_izq, dt)  # Movimiento continuado
+        clock.tick(FPS)
 
     pygame.quit()
 
@@ -66,7 +73,7 @@ def cargar_robot():
         Carga de la imagen del robot.
     """
     robot = pygame.transform.scale(pygame.image.load("assets/car_top_view-removebg.png"),
-                                                    (FULL_MAP_WIDTH / 10, FULL_MAP_HEIGHT / 10))
+                                   (FULL_MAP_WIDTH / 10, FULL_MAP_HEIGHT / 10))
     rotada = robot
     rect = rotada.get_rect(center=(400, 400))
     return robot
