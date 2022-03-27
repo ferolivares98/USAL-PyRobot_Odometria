@@ -13,7 +13,6 @@ def main():
     screen = pygame.display.set_mode((FULL_MAP_WIDTH + CON_WIDTH,
                                       FULL_MAP_HEIGHT))
     pygame.display.set_caption(' Robot  |  Odometría ')
-    font = pygame.font.SysFont("Ubuntu", 18, False, False)
     imagen_robot = cargar_robot()
 
     robot = Robot()
@@ -52,11 +51,11 @@ def main():
                     enc_der, enc_izq = robot.movimiento_E()
                 # Tecla incorrecta = 0.
                 # robot.odo_calc(enc_der, enc_izq)  # Revisar
-
+            robot.odo_calc(enc_der, enc_izq)  # Revisar
         # robot.dibujar_fondo(screen)
+        clock.tick(FPS)
         robot.odo_calc(enc_der, enc_izq)  # Revisar
         robot.dibujar_robot(screen, imagen_robot)
-        clock.tick(FPS)
         pygame.display.flip()
 
     pygame.quit()
@@ -66,11 +65,12 @@ def cargar_robot():
     """
         Carga de la imagen del robot.
     """
-    robot = pygame.transform.scale(pygame.image.load("assets/car_top_view.png"),
-                           (FULL_MAP_WIDTH / 10, FULL_MAP_HEIGHT / 10))
+    robot = pygame.transform.scale(pygame.image.load("assets/car_top_view-removebg.png"),
+                                                    (FULL_MAP_WIDTH / 10, FULL_MAP_HEIGHT / 10))
     rotada = robot
     rect = rotada.get_rect(center=(400, 400))
     return robot
+
 
 if __name__ == '__main__':
     main()

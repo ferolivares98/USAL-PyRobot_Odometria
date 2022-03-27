@@ -12,6 +12,9 @@ class Robot:
         self.theta_giro = 0
         self.rotada = None
         self.rect_rotada = None
+        self.font = pygame.font.SysFont("Arial", 24, False, False)
+        self.textRect = self.font.get_rect()
+        self.textRect.center = (FULL_MAP_WIDTH / 10, FULL_MAP_HEIGHT / 10)
 
     @staticmethod
     def movimiento_W():
@@ -62,6 +65,13 @@ class Robot:
     def dibujar_fondo(self, screen):
         screen.fill(COLOR_BLANCO)
         pygame.display.flip()
+
+
+    def dibujar_pos_info(self, screen):
+        texto = f"PosX = {self.pos_x}\nPosY = {self.pos_y}\nTheta = {int(math.degrees(self.theta_giro))}"
+        txt_en_pantalla = self.font.render(texto, True, COLOR_BLANCO, COLOR_NEGRO)
+        screen.blit(txt_en_pantalla, )
+
 
     def odo_calc(self, vel_encoder_der, vel_encoder_izq):
         conversion_der = (2 * math.pi * (DIAM_RUEDA_DER / 2)) / RESOLUCION_ENCODER
