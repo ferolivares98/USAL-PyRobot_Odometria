@@ -57,7 +57,7 @@ def main():
         dt = (pygame.time.get_ticks() - last_time)/1000
         last_time = pygame.time.get_ticks()
         pygame.display.flip()
-        screen.fill(COLOR_BLANCO)
+        robot.dibujar_fondo(screen)
         robot.dibujar_robot(screen, imagen_robot)
         robot.dibujar_trail(screen)
         robot.dibujar_pos_info(screen)

@@ -65,11 +65,9 @@ class Robot:
         self.rotada = pygame.transform.rotozoom(imagen_robot, math.degrees(self.theta_giro), 1)
         self.rect_rotada = self.rotada.get_rect(center=(self.pos_x, self.pos_y))
         screen.blit(self.rotada, self.rect_rotada)
-        #pygame.display.flip()
 
     def dibujar_fondo(self, screen):
         screen.fill(COLOR_BLANCO)
-        # pygame.display.flip()
 
     def dibujar_pos_info(self, screen):
         texto = f"PosX = {int(self.pos_x)} | PosY = {int(self.pos_y)} | " \
@@ -91,7 +89,9 @@ class Robot:
         self.rueda_der = conversion_der * vel_encoder_der
         self.rueda_izq = conversion_izq * vel_encoder_izq
 
-        """if rueda_der < 0 and rueda_izq > 0:
+        """
+        Funcional pero no corresponde con el sprite del robot-vehículo.
+        if rueda_der < 0 and rueda_izq > 0:
             distancia_recorrida = rueda_izq / 2
         elif rueda_izq < 0 and rueda_der > 0:
             distancia_recorrida = rueda_der / 2
