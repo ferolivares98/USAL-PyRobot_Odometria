@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+# Fernando Olivares Naranjo, 54126671N
+
 import pygame
 import math
 from constants import *
@@ -32,6 +34,9 @@ class Robot:
         self.instrucciones = self.fuenteInstrucciones.render('default', True, COLOR_BLANCO, COLOR_NEGRO)
         self.instruccionesRect = self.instrucciones.get_rect()
 
+    '''
+    Métodos de velocidad de cada una de las ruedas.
+    '''
     @staticmethod
     def movimiento_W():
         encoder_der = 10
@@ -68,6 +73,10 @@ class Robot:
         encoder_izq = 10
         return encoder_der, encoder_izq
 
+    '''
+        Configuraciones y desliz de ruedas, además del reinicio (se reinician todas las variables, incluido
+        la línea, el trazo del movimiento).
+    '''
     def encoder_aumenta(self):
         self.encoder += 10
 
@@ -109,6 +118,9 @@ class Robot:
         self.rect_rotada = None
         self.trail_list = []
 
+    '''
+        Dibujos de fondo, robot, trazo, controles e información en tiempo real.
+    '''
     def dibujar_robot(self, screen, imagen_robot):
         """ screen.blit(imagen_robot, pygame.Rect(FULL_MAP_WIDTH, FULL_MAP_HEIGHT,
                                               FULL_MAP_WIDTH / 10,
@@ -144,7 +156,7 @@ class Robot:
         self.texto = self.fuente.render(text, True, COLOR_NEGRO, COLOR_BLANCO)
         screen.blit(self.texto, self.textRect)
         text2 = f"Tam_Rueda_Der = {int(self.diametro_der)} | Tam_Rueda_Izq = {int(self.diametro_izq)} | " \
-               f"Encoder = {int(self.encoder)}"
+                f"Encoder = {int(self.encoder)}"
         self.texto_ruedas = self.fuente.render(text2, True, COLOR_NEGRO, COLOR_BLANCO)
         screen.blit(self.texto_ruedas, self.textRect_ruedas)
 
@@ -154,21 +166,24 @@ class Robot:
                              (self.trail_list[i + 1][0], self.trail_list[i + 1][1]))
         self.trail_list.append((self.pos_x, self.pos_y))
 
+    '''
+        Cálculos principales de odometría del robot. Posición, velocidad, etc...
+    '''
     def odo_calc(self, vel_encoder_der, vel_encoder_izq, ticks_vel):
-        '''
+        """
         Este if evita que se realicen resbalones en el supuesto de que se pare el vehículo, se pulse la tecla
         de resbalar y rápidamente se arranque el vehículo. Se puede cambiar si ese es el comportamiento deseado.
-        '''
+        """
         if vel_encoder_der == 0 & vel_encoder_izq == 0:
             self.resbalon = 0
             return
         conversion_der = (2 * math.pi * (self.diametro_der / 2)) / self.encoder
         conversion_izq = (2 * math.pi * (self.diametro_izq / 2)) / self.encoder
-        '''
+        """
         Dependiendo del valor de resbalón, no sucede nada o se resbala durante 200 llamadas
         la rueda correspondiente al valor de la variable. Si es negativa la derecha, si es positiva
         la izquierda.
-        '''
+        """
         if self.resbalon == 0:
             self.rueda_der = conversion_der * vel_encoder_der
             self.rueda_izq = conversion_izq * vel_encoder_izq

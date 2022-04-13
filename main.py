@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 
+# Fernando Olivares Naranjo, 54126671N
+
 from robot import *
 from constants import *
-
-
-# https://gm0.org/en/latest/docs/software/odometry.html
 
 
 def main():
@@ -18,7 +17,7 @@ def main():
     screen.fill(COLOR_BLANCO)
     robot.dibujar_robot(screen, imagen_robot)
     enc_der, enc_izq = 0, 0
-    last_enc_der, last_enc_izq = 0, 0
+    last_enc_der, last_enc_izq = 0, 0  # Necesario para recuperar valores ante paradas o teclas de config.
     necesidad_de_velocidad = False
 
     run = True
@@ -63,7 +62,7 @@ def main():
                 # Reinicio de las variables.
                 elif event.key == pygame.K_r:
                     robot.reinicio()
-                    necesidad_de_velocidad = True
+                    necesidad_de_velocidad = False  # Reinicio con parada. Poner a True para mantener mov. previo.
                 keys = pygame.key.get_pressed()
                 if keys[pygame.K_i] and keys[pygame.K_UP]:
                     robot.encoder_aumenta()
@@ -95,7 +94,7 @@ def main():
         robot.dibujar_pos_info(screen)
         # pygame.display.flip()
         # Con esta variable se controla si la tecla pulsada causa resbalones o comportamientos de cambios de
-        # velocidad y diámetro. Se evita perder la velocidad del robot. En el caso de los resbalones continua y en
+        # velocidad y diámetro. Se evita perder la velocidad del robot. En el caso de los resbalones continúa y
         # en el de cambios se detiene para realizar los necesarios.
         if necesidad_de_velocidad:
             enc_der, enc_izq = last_enc_der, last_enc_izq

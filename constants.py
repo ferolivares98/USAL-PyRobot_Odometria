@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+# Fernando Olivares Naranjo, 54126671N
+
 FULL_MAP_WIDTH = 1000
 FULL_MAP_HEIGHT = 800
 EXTRA_WIDTH = 200
@@ -12,6 +14,5 @@ RESOLUCION_ENCODER = 50
 COLOR_BLANCO = (255, 255, 255)
 COLOR_NEGRO = (0, 0, 0)
 COLOR_LINEA = (51, 51, 255)
-
 
 FPS = 30
