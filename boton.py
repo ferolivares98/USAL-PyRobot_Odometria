@@ -14,7 +14,7 @@ class Boton():
         self.text = text
 
     def dibujar(self, window):
-        pygame.draw.rect(window, color, (self.x, self.y, self.width, self.height), 0)
+        pygame.draw.rect(window, self.color, (self.x, self.y, self.width, self.height), 0)
 
     def on_click(self):
         pass

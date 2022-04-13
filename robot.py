@@ -83,7 +83,7 @@ class Robot:
                              (self.trail_list[i + 1][0], self.trail_list[i + 1][1]))
         self.trail_list.append((self.pos_x, self.pos_y))
 
-    def odo_calc(self, vel_encoder_der, vel_encoder_izq, dt):
+    def odo_calc(self, vel_encoder_der, vel_encoder_izq, ticks_vel):
         conversion_der = (2 * math.pi * (DIAM_RUEDA_DER / 2)) / RESOLUCION_ENCODER
         conversion_izq = (2 * math.pi * (DIAM_RUEDA_IZQ / 2)) / RESOLUCION_ENCODER
         self.rueda_der = conversion_der * vel_encoder_der
@@ -104,6 +104,6 @@ class Robot:
         self.theta_giro = self.theta_giro + giro_recorrido
         self.pos_x = self.pos_x + distancia_recorrida * math.cos(self.theta_giro)
         self.pos_y = self.pos_y + distancia_recorrida * math.sin(self.theta_giro)"""
-        self.pos_x += ((self.rueda_der + self.rueda_izq) / 2) * math.cos(self.theta_giro) * dt
-        self.pos_y -= ((self.rueda_der + self.rueda_izq) / 2) * math.sin(self.theta_giro) * dt
-        self.theta_giro += (self.rueda_der - self.rueda_izq) / SEPARACION_RUEDAS*dt
+        self.pos_x += ((self.rueda_der + self.rueda_izq) / 2) * math.cos(self.theta_giro) * ticks_vel
+        self.pos_y -= ((self.rueda_der + self.rueda_izq) / 2) * math.sin(self.theta_giro) * ticks_vel
+        self.theta_giro += (self.rueda_der - self.rueda_izq) / SEPARACION_RUEDAS * ticks_vel

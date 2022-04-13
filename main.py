@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 
-import pygame
-from constants import *
 from robot import *
+
 
 
 # https://gm0.org/en/latest/docs/software/odometry.html
@@ -22,7 +21,7 @@ def main():
 
     run = True
     clock = pygame.time.Clock()
-    dt = 0
+    # ticks_vel = 0
     last_time = pygame.time.get_ticks()
 
     while run:
@@ -31,7 +30,7 @@ def main():
                 run = False
 
             elif event.type == pygame.KEYDOWN:
-                enc_der, enc_izq = 0, 0 # Descomentar para movimiento continuado.
+                enc_der, enc_izq = 0, 0  # Descomentar para movimiento continuado.
                 # Movimiento continuo hacia delante. Tecla W.
                 if event.key == pygame.K_w:
                     enc_der, enc_izq = robot.movimiento_W()
@@ -51,10 +50,9 @@ def main():
                 if event.key == pygame.K_e:
                     enc_der, enc_izq = robot.movimiento_E()
                 # Tecla incorrecta = 0.
-                # robot.odo_calc(enc_der, enc_izq)  # Revisar
-            robot.odo_calc(enc_der, enc_izq, dt)  # Revisar
+            # robot.odo_calc(enc_der, enc_izq, ticks_vel) #Activa aceleración continuada (Recoge todos los eventos)
         # robot.dibujar_fondo(screen)
-        dt = (pygame.time.get_ticks() - last_time)/1000
+        ticks_vel = (pygame.time.get_ticks() - last_time)/1000
         last_time = pygame.time.get_ticks()
         pygame.display.flip()
         robot.dibujar_fondo(screen)
@@ -62,7 +60,7 @@ def main():
         robot.dibujar_trail(screen)
         robot.dibujar_pos_info(screen)
         # pygame.display.flip()
-        robot.odo_calc(enc_der, enc_izq, dt)  # Movimiento continuado
+        robot.odo_calc(enc_der, enc_izq, ticks_vel)  # Movimiento continuado
         clock.tick(FPS)
 
     pygame.quit()
@@ -74,8 +72,6 @@ def cargar_robot():
     """
     robot = pygame.transform.scale(pygame.image.load("assets/car_top_view-removebg.png"),
                                    (FULL_MAP_WIDTH / 10, FULL_MAP_HEIGHT / 10))
-    rotada = robot
-    rect = rotada.get_rect(center=(400, 400))
     return robot
 
 
