@@ -19,6 +19,7 @@ def main():
     robot.dibujar_robot(screen, imagen_robot)
     enc_der, enc_izq = 0, 0
     last_enc_der, last_enc_izq = 0, 0
+    necesidad_de_velocidad = False
 
     run = True
     clock = pygame.time.Clock()
@@ -32,6 +33,7 @@ def main():
 
             elif event.type == pygame.KEYDOWN:
                 enc_der, enc_izq = 0, 0  # Descomentar para movimiento continuado.
+                necesidad_de_velocidad = False
                 # Movimiento continuo hacia delante. Tecla W.
                 if event.key == pygame.K_w:
                     enc_der, enc_izq = robot.movimiento_W()
@@ -53,25 +55,34 @@ def main():
                 # Resbalón de la rueda derecha. Tecla V.
                 elif event.key == pygame.K_v:
                     robot.resbalon_derecha()
+                    necesidad_de_velocidad = True
                 # Resbalón de la rueda izquierda. Tecla B.
                 elif event.key == pygame.K_b:
                     robot.resbalon_izquierda()
+                    necesidad_de_velocidad = True
                 # Reinicio de las variables.
                 elif event.key == pygame.K_r:
                     robot.reinicio()
+                    necesidad_de_velocidad = True
                 keys = pygame.key.get_pressed()
                 if keys[pygame.K_i] and keys[pygame.K_UP]:
                     robot.encoder_aumenta()
+                    necesidad_de_velocidad = True
                 elif keys[pygame.K_i] and keys[pygame.K_DOWN]:
                     robot.encoder_disminuye()
+                    necesidad_de_velocidad = True
                 elif keys[pygame.K_o] and keys[pygame.K_UP]:
                     robot.diametro_derecha_aumenta()
+                    necesidad_de_velocidad = True
                 elif keys[pygame.K_o] and keys[pygame.K_DOWN]:
                     robot.diametro_derecha_disminuye()
+                    necesidad_de_velocidad = True
                 elif keys[pygame.K_p] and keys[pygame.K_UP]:
                     robot.diametro_izquierda_aumenta()
+                    necesidad_de_velocidad = True
                 elif keys[pygame.K_p] and keys[pygame.K_DOWN]:
                     robot.diametro_izquierda_disminuye()
+                    necesidad_de_velocidad = True
                 # Tecla incorrecta = 0.
             # robot.odo_calc(enc_der, enc_izq, ticks_vel) #Activa aceleración continuada (Recoge todos los eventos)
         # robot.dibujar_fondo(screen)
@@ -83,7 +94,13 @@ def main():
         robot.dibujar_trail(screen)
         robot.dibujar_pos_info(screen)
         # pygame.display.flip()
+        # Con esta variable se controla si la tecla pulsada causa resbalones o comportamientos de cambios de
+        # velocidad y diámetro. Se evita perder la velocidad del robot. En el caso de los resbalones continua y en
+        # en el de cambios se detiene para realizar los necesarios.
+        if necesidad_de_velocidad:
+            enc_der, enc_izq = last_enc_der, last_enc_izq
         robot.odo_calc(enc_der, enc_izq, ticks_vel)  # Movimiento continuado
+        last_enc_der, last_enc_izq = enc_der, enc_izq
         clock.tick(FPS)
 
     pygame.quit()

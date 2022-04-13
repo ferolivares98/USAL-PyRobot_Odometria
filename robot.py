@@ -105,6 +105,9 @@ class Robot:
         self.diametro_izq = DIAM_RUEDA_IZQ
         self.encoder = RESOLUCION_ENCODER
         self.resbalon = 0
+        self.rotada = None
+        self.rect_rotada = None
+        self.trail_list = []
 
     def dibujar_robot(self, screen, imagen_robot):
         """ screen.blit(imagen_robot, pygame.Rect(FULL_MAP_WIDTH, FULL_MAP_HEIGHT,
@@ -152,6 +155,13 @@ class Robot:
         self.trail_list.append((self.pos_x, self.pos_y))
 
     def odo_calc(self, vel_encoder_der, vel_encoder_izq, ticks_vel):
+        '''
+        Este if evita que se realicen resbalones en el supuesto de que se pare el vehículo, se pulse la tecla
+        de resbalar y rápidamente se arranque el vehículo. Se puede cambiar si ese es el comportamiento deseado.
+        '''
+        if vel_encoder_der == 0 & vel_encoder_izq == 0:
+            self.resbalon = 0
+            return
         conversion_der = (2 * math.pi * (self.diametro_der / 2)) / self.encoder
         conversion_izq = (2 * math.pi * (self.diametro_izq / 2)) / self.encoder
         '''
