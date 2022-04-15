@@ -1,8 +1,8 @@
 # USAL-PyRobot_Odometry
 
-Controles:
+## Controles:
 
-MOVIMIENTOS
+### MOVIMIENTOS
 - Avance -> W
 - Retroceso -> S
 - 90ºIzquierda -> A
@@ -12,7 +12,7 @@ MOVIMIENTOS
 - Parar -> "Resto no en uso"
 
 
-CONFIGURACIÓN
+### CONFIGURACIÓN
 - AumentarEncoder (+10)     I + ⬆️
 - DisminuirEncoder (-10)     I + ⬇️
 - AumentarRuedaDer (+1)     O + ⬆️
@@ -21,7 +21,10 @@ CONFIGURACIÓN
 - DisminuirRuedaIzq (-1)    P + ⬇️
 
 
-ACCIONES ESPORÁDICAS
+### ACCIONES ESPORÁDICAS
 - ResbalónRuedaDer -> V
 - ResbalónRuedaIzq -> B
 - ReiniciarValores -> R
+
+## Ejemplos
+![Image alt text](assets/ex.jpg)
